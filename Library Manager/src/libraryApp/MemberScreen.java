@@ -90,8 +90,8 @@ public class MemberScreen extends JFrame implements ActionListener{
 		lblSemster.setBounds(50, 246, 56, 16);
 		contentPane.add(lblSemster);
 		
-		int[] arr = {1,2,3,4,5,6,7,8};
-		comboBoxSemster = new JComboBox<Integer>();
+		Integer[] arr = {1,2,3,4,5,6,7,8};
+		comboBoxSemster = new JComboBox<Integer>(arr);
 		comboBoxSemster.setBounds(154, 243, 116, 22);
 		comboBoxSemster.setEditable(false);
 		contentPane.add(comboBoxSemster);
@@ -202,7 +202,7 @@ public class MemberScreen extends JFrame implements ActionListener{
 			else
 				gender = "Not Specified";
 			
-			int semster = comboBoxSemster.getSelectedIndex()+1;
+			int semster = comboBoxSemster.getSelectedIndex()-1;
 		
 			App.members.add(new Member(name, fatherName, gender, cms, semster));
 		
@@ -273,16 +273,16 @@ public class MemberScreen extends JFrame implements ActionListener{
 		
 	}
 	private void fillForm(int index) {
-		Member student = App.members.get(index);
+		Member member = App.members.get(index);
 		
-		textFieldCMS.setText(""+student.getCMS());
-		textFieldName.setText(student.getName());
-		textFieldFather.setText(student.getFatherName());
+		textFieldCMS.setText(""+member.getCMS());
+		textFieldName.setText(member.getName());
+		textFieldFather.setText(member.getFatherName());
 		
-		if(student.getGender().equals("Male")) {
+		if(member.getGender().equals("Male")) {
 			rdbtnMale.setSelected(true);
 			rdbtnFemale.setSelected(false);
-		}else if(student.getGender().equals("Female")) {
+		}else if(member.getGender().equals("Female")) {
 			rdbtnMale.setSelected(false);
 			rdbtnFemale.setSelected(true);
 		}else {
@@ -290,7 +290,7 @@ public class MemberScreen extends JFrame implements ActionListener{
 			rdbtnFemale.setSelected(false);
 		}
 		
-		comboBoxSemster.setSelectedIndex(student.getSemster()-1);
+		comboBoxSemster.setSelectedIndex(member.getSemster());
 		
 	}
 	private int searchMember(int cms) {

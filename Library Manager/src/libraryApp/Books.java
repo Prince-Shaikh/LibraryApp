@@ -1,6 +1,7 @@
 package libraryApp;
 
-import java.util.HashMap;
+import java.util.ArrayList;
+//import java.util.HashMap;
 
 public class Books {
 
@@ -8,7 +9,9 @@ public class Books {
 	private String title;
 	private String author;
 	private int qty;
-	private HashMap<Member,int[]> studentsEnrolled = new HashMap<>();
+//	private HashMap<Member,int[]> studentsEnrolled = new HashMap<>();
+	
+	private ArrayList<Member> booksGiven = new ArrayList<>();
 	
 	public Books(String code, String title, String author, int qty){
 		this.code = code;
@@ -17,30 +20,37 @@ public class Books {
 		this.qty = qty;
 	}
 	
-	public void enrollStudent(Member student, int[] marks) {
-		studentsEnrolled.put(student, marks);
+	public void lendBook(Member m) {
+//		studentsEnrolled.put(student);
+		booksGiven.add(m);
+		this.qty--;
 	}
 	
-	public void unEnrollStudent(Member student) {
-		studentsEnrolled.remove(student);
-	}
-	public Member[] getEnrolledStudents() {
+	public void bookReturn(Member m) {
+				booksGiven.remove(m);
+				this.qty++;
 		
-		Member[] arr = new Member[studentsEnrolled.size()];
+		
+	}
+	public Member[] getBooksGiven() {
+		
+		Member[] arr = new Member[booksGiven.size()];
 		
 		int i = 0;
-		for(Member student : studentsEnrolled.keySet()) {
-			arr[i] = student;
+		for(Member m : booksGiven) {
+			arr[i] = m;
 			i++;
 		}
 		return arr;
 	}
-	public HashMap<Member,int[]> getEnrolledStudentsAsMap(){
-		return studentsEnrolled;
-	}
-	public int[] getStudentMarks(Member student) {
-		return studentsEnrolled.get(student);
-	}
+	
+//	public HashMap<Member,int[]> getEnrolledStudentsAsMap(){
+//		return studentsEnrolled;
+//	}
+	
+//	public int[] getStudentMarks(Member student) {
+//		return studentsEnrolled.get(student);
+//	}
 	
 	
 	public void setCode(String code) {
