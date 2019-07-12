@@ -52,7 +52,7 @@ public class App extends JFrame implements ActionListener{
 	 */
 	public App() {
 		
-		setTitle("Student Information System");
+		setTitle("Library Manager");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1024, 567);
 		this.setLocationRelativeTo(null);
@@ -80,7 +80,7 @@ public class App extends JFrame implements ActionListener{
 		btnStudent.setFont(new Font("Tahoma", Font.BOLD, 20));
 		btnStudent.setBackground(SystemColor.inactiveCaption);
 		btnStudent.addActionListener(this);
-		btnStudent.setActionCommand("Students");
+		btnStudent.setActionCommand("Members");
 		
 		btnCourses = new JButton("Books");
 		panelBottom.add(btnCourses);
@@ -88,14 +88,14 @@ public class App extends JFrame implements ActionListener{
 		btnCourses.setFont(new Font("Tahoma", Font.BOLD, 20));
 		btnCourses.setBackground(SystemColor.inactiveCaption);
 		btnCourses.addActionListener(this);
-		btnCourses.setActionCommand("Courses");
+		btnCourses.setActionCommand("Books");
 		
 		buttonCourseRegister = new JButton("Lend Book");
 		panelBottom.add(buttonCourseRegister);
 		buttonCourseRegister.setForeground(Color.WHITE);
 		buttonCourseRegister.setFont(new Font("Tahoma", Font.BOLD, 20));
 		buttonCourseRegister.setBackground(SystemColor.inactiveCaption);
-		buttonCourseRegister.setActionCommand("Enroll");
+		buttonCourseRegister.setActionCommand("Lend");
 		buttonCourseRegister.addActionListener(this);
 		
 		btnReports = new JButton("Book Return");
@@ -104,7 +104,7 @@ public class App extends JFrame implements ActionListener{
 		btnReports.setFont(new Font("Tahoma", Font.BOLD, 20));
 		btnReports.setBackground(SystemColor.inactiveCaption);
 		btnReports.addActionListener(this);
-		btnReports.setActionCommand("Reports");
+		btnReports.setActionCommand("Return");
 		
 		addDummyData();
 	}
@@ -113,20 +113,20 @@ public class App extends JFrame implements ActionListener{
 	public void actionPerformed(ActionEvent e) {
 		String command = e.getActionCommand();
 		
-		if(command.equals("Students")) {
+		if(command.equals("Members")) {
 			MemberScreen screen = new MemberScreen();
 			screen.setVisible(true);
 			
-		}else if(command.equals("Courses")) {
+		}else if(command.equals("Books")) {
 			BooksScreen screen = new BooksScreen();
 			screen.setVisible(true);
 			
-		}else if(command.equals("Enroll")) {
-			EnrollScreen screen = new EnrollScreen();
+		}else if(command.equals("Lend")) {
+			LendScreen screen = new LendScreen();
 			screen.setVisible(true);
 			
-		}else if(command.equals("Reports")) {
-			ReportsScreen screen = new ReportsScreen();
+		}else if(command.equals("Return")) {
+			ReciveScreen screen = new ReciveScreen();
 			screen.setVisible(true);
 		}
 		

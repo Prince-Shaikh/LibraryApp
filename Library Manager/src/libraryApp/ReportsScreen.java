@@ -143,9 +143,9 @@ public class ReportsScreen extends JFrame implements ActionListener {
 		}else if(command.equals("ComboA")) {
 			int index = comboA.getSelectedIndex();
 			if(index != 0) {
-				Books course = App.courses.get(index-1);
+				Books course = App.books.get(index-1);
 				
-				Member[] enrolledStudents = course.getEnrolledStudents();
+				Member[] enrolledStudents = course.getBooksGiven();
 				
 				String[] studentNames = new String[enrolledStudents.length];
 				int i = 0;
@@ -172,9 +172,9 @@ public class ReportsScreen extends JFrame implements ActionListener {
 		}else if(command.equals("ComboB")) {
 			int index = comboA.getSelectedIndex();
 			if(index != 0) {
-				Books course = App.courses.get(index-1);
+				Books course = App.books.get(index-1);
 				
-				Member[] enrolledStudents = course.getEnrolledStudents();
+				Member[] enrolledStudents = course.getBooksGiven();
 				
 			    DefaultTableModel model = (DefaultTableModel) table.getModel();
 
@@ -188,8 +188,8 @@ public class ReportsScreen extends JFrame implements ActionListener {
 			    
 			    // Append a row
 			    for(Member student : enrolledStudents) {
-			    	marks= course.getStudentMarks(student);
-			    	model.addRow(new Object[] {student.getName(),marks[0],marks[1],marks[2], marks[0]+marks[1]+marks[2]});
+//			    	marks= course.getStudentMarks(student);
+//			    	model.addRow(new Object[] {student.getName(),marks[0],marks[1],marks[2], marks[0]+marks[1]+marks[2]});
 			    }
 			    
 			    table.setModel(model);
@@ -198,9 +198,9 @@ public class ReportsScreen extends JFrame implements ActionListener {
 		}else if(command.equals("ComboC")) {
 			int index = comboA.getSelectedIndex();
 			if(index != 0) {
-				Member student = App.students.get(index-1);
+				Member student = App.members.get(index-1);
 				
-				Books[] courses = new Books[App.courses.size()];
+				Books[] courses = new Books[App.books.size()];
 				
 			    DefaultTableModel model = (DefaultTableModel) table.getModel();
 			    
@@ -209,7 +209,7 @@ public class ReportsScreen extends JFrame implements ActionListener {
 				
 
 				int i = 0;
-				for(Books course : App.courses) {
+				for(Books course : App.books) {
 					courses[i] = course;
 					i++;
 				}
@@ -220,14 +220,14 @@ public class ReportsScreen extends JFrame implements ActionListener {
 				for(int j = 0; j<courses.length; j++) {
 					
 					try {
-					if(courses[j].getEnrolledStudents().length != 0) {
+					if(courses[j].getBooksGiven().length != 0) {
 
-						Member[] s = courses[j].getEnrolledStudents();
+						Member[] s = courses[j].getBooksGiven();
 						for(i = 0; i<s.length;i++) {
 							if(s[i] == student) {
-								int[] studentMarks = courses[j].getStudentMarks(student);
-								int total = studentMarks[0]+studentMarks[1]+studentMarks[2];
-								model.addRow(new Object[] {courses[j].getTitle(),studentMarks[0],studentMarks[1],studentMarks[2],total});
+//								int[] studentMarks = courses[j].getStudentMarks(student);
+//								int total = studentMarks[0]+studentMarks[1]+studentMarks[2];
+//								model.addRow(new Object[] {courses[j].getTitle(),studentMarks[0],studentMarks[1],studentMarks[2],total});
 							}
 						}
 					}
@@ -245,11 +245,11 @@ public class ReportsScreen extends JFrame implements ActionListener {
 	private void updateCourseItems() {
 		DefaultComboBoxModel<String> model = new DefaultComboBoxModel<String>();
 		model.addElement("Courses");
-		for(Books course: App.courses) {
+		for(Books course: App.books) {
 			model.addElement(course.getTitle());
 		}
 		comboA.setModel(model);
-		if(App.courses.size()<1)
+		if(App.books.size()<1)
 			comboA.setEnabled(false);
 		else
 			comboA.setEnabled(true);
@@ -258,11 +258,11 @@ public class ReportsScreen extends JFrame implements ActionListener {
 	private void updateStudentItems() {
 		DefaultComboBoxModel<String> model = new DefaultComboBoxModel<String>();
 		model.addElement("Students");
-		for(Member student: App.students) {
+		for(Member student: App.members) {
 			model.addElement(student.getName());
 		}
 		comboA.setModel(model);
-		if(App.students.size()<1)
+		if(App.members.size()<1)
 			comboA.setEnabled(false);
 		
 	}
