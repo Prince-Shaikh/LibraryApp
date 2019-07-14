@@ -1,35 +1,29 @@
 package libraryApp;
 
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableColumn;
 import javax.swing.JLabel;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.HashMap;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.border.BevelBorder;
-import java.awt.Color;
-import java.awt.Dimension;
 
 public class ReportsScreen extends JFrame implements ActionListener {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JButton btnA;
 	private JButton btnB;
-	private JButton btnC;
 	private JPanel panelMain;
 	private JPanel panelA;
 	private JComboBox<String> comboA;
@@ -42,7 +36,7 @@ public class ReportsScreen extends JFrame implements ActionListener {
 	 */
 	public ReportsScreen() {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setTitle("Students");
+		setTitle("Reports");
 		setBounds(100, 100, 1024, 567);
 		this.setLocationRelativeTo(null);
 		contentPane = new JPanel();
@@ -60,33 +54,26 @@ public class ReportsScreen extends JFrame implements ActionListener {
 		panelMain.add(lblReports);
 		lblReports.setFont(new Font("Tahoma", Font.BOLD, 30));
 		
-		btnA = new JButton("Students Enrolled in a Course");
-		btnA.setBounds(275, 138, 455, 72);
+		btnA = new JButton("Lending Details");
+		btnA.setBounds(275, 174, 455, 72);
 		panelMain.add(btnA);
 		btnA.setFont(new Font("Tahoma", Font.BOLD, 18));
 		btnA.addActionListener(this);
 		btnA.setActionCommand("A");
 		
-		btnB = new JButton("Students Enrolled in a Course (with marks)");
-		btnB.setBounds(275, 264, 455, 72);
+		btnB = new JButton("Books Details");
+		btnB.setBounds(275, 300, 455, 72);
 		panelMain.add(btnB);
 		btnB.setFont(new Font("Tahoma", Font.BOLD, 18));
 		btnB.addActionListener(this);
 		btnB.setActionCommand("B");
-		
-		btnC = new JButton("Information Related to Student");
-		btnC.setBounds(275, 390, 455, 72);
-		panelMain.add(btnC);
-		btnC.setFont(new Font("Tahoma", Font.BOLD, 18));
-		btnC.addActionListener(this);
-		btnC.setActionCommand("C");
 		
 		panelA = new JPanel();
 		panelA.setLayout(null);
 		panelA.setBounds(0, 0, 1006, 520);
 		contentPane.add(panelA);
 		
-		comboA = new JComboBox();
+		comboA = new JComboBox<>();
 		comboA.setBounds(305, 27, 395, 29);
 		comboA.addActionListener(this);
 		comboA.setActionCommand("ComboA");
@@ -117,23 +104,27 @@ public class ReportsScreen extends JFrame implements ActionListener {
 			panelA.setVisible(true);
 			
 			comboA.setActionCommand("ComboA");
-			updateCourseItems();
+			updateBookItems();
 			
 		}else if(command.equals("B")) {
 			panelMain.setVisible(false);
 			panelA.setVisible(true);
 			
-			updateCourseItems();
-			comboA.setActionCommand("ComboB");
-			
-			
-		}else if(command.equals("C")) {
-			panelMain.setVisible(false);
-			panelA.setVisible(true);
-			
-			comboA.setActionCommand("ComboC");
-			updateStudentItems();
-			
+			comboA.setVisible(false);
+				
+			DefaultTableModel model = (DefaultTableModel) table.getModel();
+
+			model.setRowCount(0);
+			model.setColumnCount(0);
+			    
+			String[] colNames = {"Books","Quantity"};
+			model.setColumnIdentifiers(colNames);
+
+			for(Books b: App.books) {
+				model.addRow(new Object[] {b.getTitle(),b.getQuantity()});
+			}
+	    
+			table.setModel(model);
 			
 		}else if(command.equals("Back")) {
 			panelMain.setVisible(true);
@@ -143,14 +134,14 @@ public class ReportsScreen extends JFrame implements ActionListener {
 		}else if(command.equals("ComboA")) {
 			int index = comboA.getSelectedIndex();
 			if(index != 0) {
-				Books course = App.books.get(index-1);
+				Books book = App.books.get(index-1);
 				
-				Member[] enrolledStudents = course.getBooksGiven();
+				Member[] members = book.getBooksGiven();
 				
-				String[] studentNames = new String[enrolledStudents.length];
+				String[] names = new String[members.length];
 				int i = 0;
-				for(Member student : enrolledStudents) {
-					studentNames[i] = student.getName();
+				for(Member m : members) {
+					names[i] = m.getName();
 					i++;
 				}
 			    DefaultTableModel model = (DefaultTableModel) table.getModel();
@@ -158,93 +149,26 @@ public class ReportsScreen extends JFrame implements ActionListener {
 			    model.setRowCount(0);
 			    model.setColumnCount(0);
 			    
-			    String[] colNames = {"Enrolled Students"};
+			    String[] colNames = {"Member"};
 			    model.setColumnIdentifiers(colNames);
 
 			    // Append a row
-			    for(String str : studentNames) {
+			    for(String str : names) {
 			    	model.addRow(new Object[] {str});
 			    }
 			    
 			    table.setModel(model);
 			}
 			
-		}else if(command.equals("ComboB")) {
-			int index = comboA.getSelectedIndex();
-			if(index != 0) {
-				Books course = App.books.get(index-1);
-				
-				Member[] enrolledStudents = course.getBooksGiven();
-				
-			    DefaultTableModel model = (DefaultTableModel) table.getModel();
-
-			    model.setRowCount(0);
-			    model.setColumnCount(0);
-			    
-			    String[] colNames = {"Enrolled Students","Mid Exams","Final Exams","Sessional","Total"};
-			    model.setColumnIdentifiers(colNames);
-
-			    int marks[];
-			    
-			    // Append a row
-			    for(Member student : enrolledStudents) {
-//			    	marks= course.getStudentMarks(student);
-//			    	model.addRow(new Object[] {student.getName(),marks[0],marks[1],marks[2], marks[0]+marks[1]+marks[2]});
-			    }
-			    
-			    table.setModel(model);
-			}
-			
-		}else if(command.equals("ComboC")) {
-			int index = comboA.getSelectedIndex();
-			if(index != 0) {
-				Member student = App.members.get(index-1);
-				
-				Books[] courses = new Books[App.books.size()];
-				
-			    DefaultTableModel model = (DefaultTableModel) table.getModel();
-			    
-			    model.setRowCount(0);
-			    model.setColumnCount(0);
-				
-
-				int i = 0;
-				for(Books course : App.books) {
-					courses[i] = course;
-					i++;
-				}
-				
-			    String[] colNames = {"Courses","Mid Exams", "Final Exams", "Seasional","Total"};
-			    model.setColumnIdentifiers(colNames);
-				
-				for(int j = 0; j<courses.length; j++) {
-					
-					try {
-					if(courses[j].getBooksGiven().length != 0) {
-
-						Member[] s = courses[j].getBooksGiven();
-						for(i = 0; i<s.length;i++) {
-							if(s[i] == student) {
-//								int[] studentMarks = courses[j].getStudentMarks(student);
-//								int total = studentMarks[0]+studentMarks[1]+studentMarks[2];
-//								model.addRow(new Object[] {courses[j].getTitle(),studentMarks[0],studentMarks[1],studentMarks[2],total});
-							}
-						}
-					}
-					}catch(NullPointerException exception) {
-						
-					}
-				}
-			    table.setModel(model);
-			}
-			
 		}
+			
+}
 		
-	}
+
 	
-	private void updateCourseItems() {
+	private void updateBookItems() {
 		DefaultComboBoxModel<String> model = new DefaultComboBoxModel<String>();
-		model.addElement("Courses");
+		model.addElement("Books");
 		for(Books course: App.books) {
 			model.addElement(course.getTitle());
 		}
@@ -255,15 +179,15 @@ public class ReportsScreen extends JFrame implements ActionListener {
 			comboA.setEnabled(true);
 		
 	}
-	private void updateStudentItems() {
-		DefaultComboBoxModel<String> model = new DefaultComboBoxModel<String>();
-		model.addElement("Students");
-		for(Member student: App.members) {
-			model.addElement(student.getName());
-		}
-		comboA.setModel(model);
-		if(App.members.size()<1)
-			comboA.setEnabled(false);
-		
-	}
+//	private void updateStudentItems() {
+//		DefaultComboBoxModel<String> model = new DefaultComboBoxModel<String>();
+//		model.addElement("Students");
+//		for(Member student: App.members) {
+//			model.addElement(student.getName());
+//		}
+//		comboA.setModel(model);
+//		if(App.members.size()<1)
+//			comboA.setEnabled(false);
+//		
+//	}
 }

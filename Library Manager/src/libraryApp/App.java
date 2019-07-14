@@ -30,6 +30,7 @@ public class App extends JFrame implements ActionListener{
 	private JButton buttonCourseRegister;
 	private JPanel panelTop;
 	private JPanel panelBottom;
+	private JButton btnReports_1;
 
 	/**
 	 * Launch the application.
@@ -72,7 +73,7 @@ public class App extends JFrame implements ActionListener{
 		
 		panelBottom = new JPanel();
 		contentPane.add(panelBottom);
-		panelBottom.setLayout(new GridLayout(0, 4, 10, 0));
+		panelBottom.setLayout(new GridLayout(0, 5, 10, 0));
 		
 		btnStudent = new JButton("Members");
 		panelBottom.add(btnStudent);
@@ -106,6 +107,14 @@ public class App extends JFrame implements ActionListener{
 		btnReports.addActionListener(this);
 		btnReports.setActionCommand("Return");
 		
+		btnReports_1 = new JButton("Reports");
+		btnReports_1.setForeground(Color.WHITE);
+		btnReports_1.setFont(new Font("Tahoma", Font.BOLD, 20));
+		btnReports_1.setBackground(SystemColor.inactiveCaption);
+		btnReports_1.setActionCommand("Reports");
+		btnReports_1.addActionListener(this);
+		panelBottom.add(btnReports_1);
+		
 		addDummyData();
 	}
 
@@ -127,6 +136,9 @@ public class App extends JFrame implements ActionListener{
 			
 		}else if(command.equals("Return")) {
 			ReciveScreen screen = new ReciveScreen();
+			screen.setVisible(true);
+		}else if(command.equals("Reports")) {
+			ReportsScreen screen = new ReportsScreen();
 			screen.setVisible(true);
 		}
 		
